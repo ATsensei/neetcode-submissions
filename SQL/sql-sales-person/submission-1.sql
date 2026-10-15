@@ -1,5 +1,12 @@
 -- Write your query below
-select u.name, COALESCE(Sum(r.distance),0) as travelled_distance from users u
-left join rides r on u.id = r.user_id
-Group by u.name
-Order by travelled_distance DESC, u.name ASC
+WITH scom_id as( 
+
+    Select sales_id from orders
+    where com_id in (
+        select com_id from company
+        where name = 'CRIMSON'
+    )
+)
+
+select name from sales_person
+where sales_id NOT in (Select sales_id from scom_id)
